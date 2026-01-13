@@ -1,0 +1,273 @@
+/* ==================== Compass Icon Styling ==================== */
+.fa-compass {
+  color: #ec250b;
+  font-size: 3rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.fa-compass:hover {
+  color: #ff5722;
+  transform: scale(1.15);
+}
+
+/* ==================== Global Font & Background ==================== */
+html,
+body {
+  font-family: 'Poppins', 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: linear-gradient(135deg, #849fe6 100%);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+footer {
+  margin-top: auto;
+}
+
+/* ==================== Navbar ==================== */
+/* ==================== Navbar Profile Icon ==================== */
+.navbar .fa-user {
+  font-size: 1rem;
+  color: #ffffff;
+  background-color: #048299;
+  padding: 6px;
+  border-radius: 50%;
+}
+
+.navbar .nav-link.d-flex {
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.navbar {
+  background: linear-gradient(90deg, #0492ab 0%, #e83d2a 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.navbar-nav .nav-link:hover {
+  color: #fdfdfdfd;
+  text-decoration: underline;
+}
+
+/* ==================== Footer ==================== */
+.f-info {
+  height: 6rem;
+  background: linear-gradient(90deg, #0492ab 0%, #e83d2a 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.3rem;
+  padding: 0 1rem;
+  box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.f-info-links a {
+  text-decoration: none;
+  color: #000000;
+  margin: 0 0.5rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.f-info-links a:hover {
+  color: #fdfdfd;
+}
+
+.f-info-socials i {
+  font-size: 1.4rem;
+  margin: 0 0.6rem;
+  color: #ffffff;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.f-info-socials i:hover {
+  color: #f5f2f1;
+  transform: scale(1.25);
+}
+
+.f-info-brand {
+  color: #ffffff;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+footer .container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* ==================== Cards ==================== */
+.card {
+  border: none !important;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  background: linear-gradient(145deg, #ffffff, #e6f0f5);
+  border-radius: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 280px;
+  flex-shrink: 0;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow:
+    0 12px 24px rgba(2, 124, 145, 0.15),
+    0 30px 60px rgba(2, 124, 145, 0.2);
+}
+
+.card-title {
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0.5rem 0 0.25rem 0;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #027c91;
+}
+
+.card-text {
+  font-weight: 400;
+  text-align: center;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.card-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-img-top {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 1.5rem !important;
+  transition: transform 0.4s ease;
+  display: block;
+}
+
+.card:hover .card-img-top {
+  transform: scale(1.05);
+}
+
+/* ==================== Form Inputs ==================== */
+:root {
+  --brand-color: #027c91;
+}
+
+.form-control:hover,
+input:hover,
+textarea:hover {
+  border-color: var(--brand-color);
+}
+
+.form-control:focus,
+input:focus,
+textarea:focus {
+  border-color: var(--brand-color) !important;
+  box-shadow: 0 0 0 0.25rem rgba(2, 124, 145, 0.25) !important;
+  outline: none;
+}
+
+/* ==================== Responsive adjustments ==================== */
+@media (max-width: 768px) {
+  .card-img-top {
+    height: 180px;
+  }
+}
+
+@media (max-width: 576px) {
+  .card-img-top {
+    height: 160px;
+  }
+}
+
+.button-container {
+  display: flex;
+}
+
+.edit-btn:hover {
+  background-color: #048299;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #e8062f;
+  color: white;
+}
+
+/* ==================== Map ==================== */
+#map {
+  height: 300px;
+  width: 100%;
+}
+
+#filters {
+    display: flex;          /* Aligns items in a row */
+    flex-wrap: wrap;        /* Allows items to wrap if screen is small */
+    align-items: center;    /* Vertically centers icons and text */
+    padding: 1rem;
+}
+
+.filter {
+    text-align: center;     /* Centers text under icons */
+    margin-right: 2rem;     /* Space between categories */
+    margin-top: 1rem;
+    opacity: 0.7;           /* Makes them look slightly greyed out */
+    transition: 0.2s;       /* Smooth transition for hover */
+    cursor: pointer;
+}
+
+.filter:hover {
+    opacity: 1;             /* Brightens on hover */
+    border-bottom: 2px solid black; /* Adds the underline effect */
+}
+
+.filter p {
+    font-size: 0.8rem;      /* Smaller text like the image */
+    margin-top: 0.25rem;
+}
+
+.filter i {
+    font-size: 1.2rem;      /* Adjust icon size */
+}
+/* ==================== Search Bar Styling ==================== */
+.search-input-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    padding-right: 5px;
+    background-color: white;
+}
+
+.search-input {
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 50px !important;
+}
+
+.search-btn {
+    background-color: #fe424d !important; /* Airbnb Red */
+    color: white !important;
+    border-radius: 50% !important;
+    padding: 7px 10px !important;
+}

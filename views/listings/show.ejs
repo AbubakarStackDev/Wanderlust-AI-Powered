@@ -1,0 +1,188 @@
+<% layout("/layouts/boilerplate") %>
+<script src="/js/map.js"></script>
+<div class="row">
+  <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-12">
+    <h3 class="mb-3"><%= listing.title %></h3>
+    <div class="card">
+      <img
+        src="<%= 
+              listing.image && listing.image.url 
+                ? listing.image.url 
+                : listing.image 
+                  ? listing.image 
+                  : 'https://images.unsplash.com/photo-1502673530728-f79b4cab31b1'
+            %>"
+        class="card-img-top"
+        alt="listing_image"
+        style="height: 250px; object-fit: cover;"
+      />
+
+      <div class="card-body">
+        <p class="card-text mb-0">
+          <b>Owned By:</b> <i><%= listing.owner.username %></i><br/>
+          <b>Title:</b> <%= listing.title %><br>
+          <b>Description:</b> <%= listing.description %><br>
+          <b>Price:</b> &#8377;<%= Number(listing.price).toLocaleString("en-IN") %><br>
+          <b>Location:</b> <%= listing.location %><br>
+          <b>Country:</b> <%= listing.country %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>
+<br>
+
+<div class="row mt-3">
+  <div class="col-6 col-md-2 offset-md-4 mb-2 mb-md-0">
+    <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark w-100">
+      Edit
+    </a>
+  </div>
+
+  <div class="col-6 col-md-2">
+    <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
+      <button type="submit" class="btn btn-dark w-100">
+        Delete
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+
+<!-- Review Section -->
+<div class="row mt-5">
+  <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
+    <div class="card shadow-sm">
+      <div class="card-body">
+
+        <h4 class="card-title text-center mb-4">Leave a Review</h4>
+
+        <form action="/listings/<%= listing._id %>/reviews" method="POST">
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Rating</label>
+
+            <fieldset class="starability-slot">
+              <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked />
+              <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+              <label for="first-rate1">1 star</label>
+              <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+              <label for="first-rate2">2 stars</label>
+              <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+              <label for="first-rate3">3 stars</label>
+              <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+              <label for="first-rate4">4 stars</label>
+              <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+              <label for="first-rate5">5 stars</label>
+            </fieldset>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Comment</label>
+            <textarea
+              name="review[comment]"
+              class="form-control"
+              rows="4"
+              required
+            ></textarea>
+          </div>
+
+          <button class="btn btn-primary w-100">Submit Review</button>
+        </form>
+
+        <hr/>
+
+        <p class="fw-bold">All Reviews</p>
+
+        <div class="p-3 rounded" style="background-color: rgb(101, 117, 121);">
+          <div class="row g-3">
+
+            <% for (let review of listing.reviews) { %>
+              <div class="col-12 col-md-6">
+                <div class="card h-100 shadow-sm">
+                  <div class="card-body">
+
+                    <h5 class="card-title">
+                      @<%= review.author ? review.author.username : "Anonymous" %>
+                    </h5>
+
+                    <p class="card-text"><%= review.comment %></p>
+
+                    <p class="starability-result" data-rating="<%= review.rating %>">
+                      Rated: <%= review.rating %> stars
+                    </p>
+
+                    <form
+                      method="POST"
+                      action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+                      <button class="btn btn-sm btn-outline-danger">
+                        Delete
+                      </button>
+                    </form>
+
+                  </div>
+                </div>
+              </div>
+            <% } %>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<!-- 📍 MAP SECTION -->
+<div class="row mt-5">
+  <div class="col-12 col-md-8 offset-md-2">
+    <h3 class="mb-3">Where you'll be</h3>
+    <div
+      id="map"
+      class="rounded"
+      style="height: 350px; width: 100%;"
+      data-lat="<%= listing.geometry?.coordinates[1] || 17.3850 %>"
+      data-lng="<%= listing.geometry?.coordinates[0] || 78.4867 %>"
+      data-title="<%= listing.title %>"
+      data-location="<%= listing.location %>"
+    ></div>
+  </div>
+</div>
+
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+
+<script>
+  const mapToken = "pk.eyJ1IjoiYWJ1YmFrYXItNSIsImEiOiJjbWs3OTQ5MDgwMDQxM2Vxd3l6amxhd3NjIn0.RSFUuyX6U7D4v6SLDjkMJg";
+  mapboxgl.accessToken = mapToken;
+
+  const mapElement = document.getElementById("map");
+  if (mapElement) {
+    const lat = parseFloat(mapElement.dataset.lat);
+    const lng = parseFloat(mapElement.dataset.lng);
+    const title = mapElement.dataset.title;
+    const location = mapElement.dataset.location;
+
+    const map = new mapboxgl.Map({
+      container: "map",
+      style: "mapbox://styles/mapbox/streets-v12",
+      center: [lng, lat],
+      zoom: 9
+    });
+
+    // Add a red marker with popup
+    new mapboxgl.Marker({ color: "red" })
+      .setLngLat([lng, lat])
+      .setPopup(
+        new mapboxgl.Popup({ offset: 25 }).setHTML(
+          `<h4>${title}</h4><p>${location}</p>`
+        )
+      )
+      .addTo(map);
+  }
+</script>
+<br><br>
