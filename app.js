@@ -15,7 +15,7 @@ const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
 const session = require("express-session");
-const MongoStore = require("connect-mongo").default; // ✅ FIXED
+const MongoStore = require("connect-mongo").default;
 const flash = require("connect-flash");
 
 const passport = require("passport");
@@ -23,7 +23,6 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
 // DATABASE
-
 const dbUrl = process.env.ATLASDB_URL;
 
 mongoose.connect(dbUrl)
@@ -38,7 +37,6 @@ app.engine("ejs", ejsMate);
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
-
 
 // SESSION STORE
 const store = MongoStore.create({
@@ -55,7 +53,7 @@ store.on("error", (e) => {
 
 const sessionOptions = {
   store,
-  secret:process.env.SECRET,
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -69,7 +67,6 @@ app.use(session(sessionOptions));
 app.use(flash());
 
 // PASSPORT
-
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -85,30 +82,33 @@ app.use((req, res, next) => {
   next();
 });
 
-// ROUTES
+// ✅ HOME ROUTE (FIX FOR NOT FOUND ISSUE)
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
 
+// ROUTES
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
 // 404
-
 app.use((req, res, next) => {
   next(new ExpressError(404, "Page Not Found"));
 });
 
-
 // ERROR HANDLER
-
 app.use((err, req, res, next) => {
   console.log("❌ ERROR:", err);
   console.log(err.stack);
+
   const { statusCode = 500, message = "Something went wrong" } = err;
   res.status(statusCode).render("error.ejs", { message });
 });
 
 // SERVER
+const PORT = process.env.PORT || 8080;
 
-app.listen(8080, () => {
-  console.log("server listening on port 8080");
+app.listen(PORT, () => {
+  console.log("server listening on port", PORT);
 });
